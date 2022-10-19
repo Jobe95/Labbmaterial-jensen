@@ -17,6 +17,7 @@ const db = mysql.createConnection({
 
 db.connect(async (err, connection) => {
   if (err) {
+    console.log(err);
     process.exit(1);
   }
   console.log('Connected!!');
@@ -27,6 +28,7 @@ db.connect(async (err, connection) => {
         process.exit(1);
       }
       console.log('Database created');
+      db.end();
       process.exit(0);
     }
   );
