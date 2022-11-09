@@ -1,0 +1,22 @@
+.main {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  border-radius: 200px;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgb(132, 227, 232);
+
+  .menuItem {
+    border-radius: 200px;
+    display: flex;
+    overflow: hidden;
+    padding: 1rem;
+    transition: background 0.3s ease-out;
+  }
+  .menuItem:hover {
+    cursor: pointer;
+    background: rgb(99, 183, 187);
+  }
+}

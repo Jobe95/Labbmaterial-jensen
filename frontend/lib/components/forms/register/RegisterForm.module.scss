@@ -1,0 +1,52 @@
+.form {
+  width: 100%;
+  .inputContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 10px 0;
+  }
+  input[type='text'],
+  input[type='email'],
+  input[type='password'],
+  input[type='submit'] {
+    border-radius: 200px;
+    padding: 20px;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  input[type='submit'] {
+    cursor: pointer;
+    height: 45px;
+    font-size: 15px;
+    background: #01d28e;
+    border: 1px solid #01d28e;
+    color: #fff;
+    padding: 10px 20px;
+    transition: background 0.3s ease-out;
+  }
+  input[type='submit']:hover {
+    background: #6cf0c2;
+  }
+  .error {
+    margin-bottom: 10px;
+    color: rgba(247, 118, 118, 1);
+    font-size: 14px;
+  }
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 2.5rem;
+  text-align: center;
+  padding-bottom: 2rem;
+}
+
+@media (min-width: 400px) {
+  .title {
+    line-height: 1.15;
+    font-size: 4rem;
+  }
+}

@@ -1,0 +1,20 @@
+.segmentedContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  background: rgb(110, 108, 108);
+  border-radius: 200px;
+  .item {
+    transition: background 0.25s ease-out;
+    padding: 1rem;
+    &.active {
+      border-radius: 200px;
+      background: #01d28e;
+    }
+    &.inactive {
+      cursor: pointer;
+      border-radius: 200px;
+    }
+  }
+}

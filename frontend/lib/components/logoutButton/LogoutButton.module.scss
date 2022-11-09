@@ -1,0 +1,16 @@
+.logOutBtn {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 200px;
+  right: 10px;
+  top: 10px;
+  background: rgba(247, 118, 118, 1);
+  transition: background 0.3s ease-out;
+}
+
+.logOutBtn:hover {
+  cursor: pointer;
+  background: rgb(219, 98, 98);
+}
