@@ -1,29 +1,38 @@
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getRecipes } from '../lib/api/api';
+import styles from '../styles/pages/Home.module.scss';
 
-interface User {
-  username?: String;
-  age: number;
-}
+const Recipes = () => {
+  const [recipes, setRecipes] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
-const Home = () => {
-  const [user, setUser] = useState<User>({ age: 1 });
+  useEffect(() => {
+    try {
+      const fetchRecipes = async () => {
+        const { data } = await getRecipes();
+        console.log(data);
+        setErrorMessage('');
+        setRecipes(data);
+      };
 
-  console.log(user.username);
+      fetchRecipes();
+    } catch (err: any) {
+      console.log(err.response);
+      setErrorMessage(err.response.statusText);
+    }
+  }, []);
 
-  const router = useRouter();
+  if (errorMessage) {
+    return <div>{errorMessage}</div>;
+  }
+
   return (
     <div>
-      Home Page
-      <div
-        onClick={() => {
-          router.replace('/articles');
-        }}
-      >
-        MY BUTTON
+      <div className={styles.main}>
+        {`Number of recipes added: ${recipes?.length}`}
       </div>
     </div>
   );
 };
 
-export default Home;
+export default Recipes;

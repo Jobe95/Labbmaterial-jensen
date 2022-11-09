@@ -1,0 +1,69 @@
+.container {
+  padding: 0 2rem;
+}
+
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  span {
+    font-size: 30px;
+    font-weight: bold;
+  }
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  padding: 0 1rem;
+
+  .card {
+    margin: 1rem;
+    padding: 1.5rem;
+    text-align: left;
+    color: inherit;
+    text-decoration: none;
+    border: 1px solid #eaeaea;
+    background: rgb(7, 7, 7);
+    border-radius: 10px;
+    transition: 0.25s ease-out;
+    max-width: 600px;
+    width: 100%;
+  }
+
+  .card:hover,
+  .card:focus,
+  .card:active {
+    color: #01d28e;
+    border-color: #01d28e;
+  }
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+@media (min-width: 400px) {
+  .title {
+    line-height: 1.15;
+    font-size: 4rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .authForm {
+    .card {
+      border-color: #222;
+    }
+  }
+}

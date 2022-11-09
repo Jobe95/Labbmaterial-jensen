@@ -1,0 +1,41 @@
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: grey;
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: rgb(237, 234, 234);
+    padding: 3rem;
+    border-radius: 20px;
+    color: black;
+    font-size: 20px;
+    max-width: 500px;
+    width: 100%;
+    .roles {
+      display: flex;
+      flex-direction: wrap;
+      gap: 6px;
+      .role {
+        font-size: 12px;
+        border-radius: 200px;
+        background-color: rgb(132, 227, 232);
+        padding: 0.5rem;
+        transition: 0.3s ease-out;
+      }
+      .role:hover {
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+      }
+    }
+  }
+}

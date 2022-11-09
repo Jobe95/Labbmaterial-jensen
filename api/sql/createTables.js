@@ -16,11 +16,9 @@ const db = mysql.createConnection({
   port: DB_PORT,
 });
 
-// CREATE TABLES
-
 db.connect(async (err, connection) => {
   console.log('RUNNING CREATE TABLE SCRIPT');
-  let createUsersTable = `CREATE TABLE IF NOT EXISTS Users (
+  const createUsersTable = `CREATE TABLE IF NOT EXISTS Users (
     userId int NOT NULL AUTO_INCREMENT,
     email varchar(100) NOT NULL, 
     username varchar(45) NOT NULL, 
@@ -28,14 +26,14 @@ db.connect(async (err, connection) => {
     PRIMARY KEY (userId)) 
     ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
     `;
-  let createRolesTable = `CREATE TABLE IF NOT EXISTS Roles (
+  const createRolesTable = `CREATE TABLE IF NOT EXISTS Roles (
     roleId int NOT NULL AUTO_INCREMENT,
     rolename varchar(45) NOT NULL,
     PRIMARY KEY (roleId)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
     `;
 
-  let createUsersWithRoleTable = `CREATE TABLE IF NOT EXISTS UsersWithRoles (
+  const createUsersWithRoleTable = `CREATE TABLE IF NOT EXISTS UsersWithRoles (
     userId int NOT NULL,
     roleId int NOT NULL,
     CONSTRAINT FK_Role FOREIGN KEY (roleId) REFERENCES Roles(roleId),
@@ -43,7 +41,7 @@ db.connect(async (err, connection) => {
     ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
     `;
 
-  let createRecipeTable = `CREATE TABLE IF NOT EXISTS Recipe (
+  const createRecipeTable = `CREATE TABLE IF NOT EXISTS Recipe (
       id int NOT NULL AUTO_INCREMENT,
       title varchar(45) NOT NULL,
       description varchar(100),
@@ -53,7 +51,7 @@ db.connect(async (err, connection) => {
       ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
       `;
 
-  let createRecipeWithOwner = `CREATE TABLE IF NOT EXISTS RecipeWithOwner (
+  const createRecipeWithOwner = `CREATE TABLE IF NOT EXISTS RecipeWithOwner (
         userId int NOT NULL,
         recipeId int NOT NULL,
         CONSTRAINT FK_UserId FOREIGN KEY (userId) REFERENCES Users(userId),
@@ -61,37 +59,68 @@ db.connect(async (err, connection) => {
         ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
         `;
 
-  db.query(createUsersTable, async (err) => {
-    if (err) {
-      console.log(err);
-      process.exit(1);
-    }
-    console.log('USER TABLE CREATED!');
-    db.query(createRolesTable, async (err) => {
-      if (err) {
-        process.exit(1);
-      }
-      console.log('ROLES TABLE CREATED!');
-      db.query(createUsersWithRoleTable, async (err) => {
+  const createSessions = `CREATE TABLE IF NOT EXISTS Sessions (
+    id int NOT NULL AUTO_INCREMENT,
+    userId int NOT NULL,
+    createdAt datetime NOT NULL,
+    isRevoked bool DEFAULT false,
+    revokedAt datetime DEFAULT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT FK_UserId_Session FOREIGN KEY (userId) REFERENCES Users(userId)
+  ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;  
+  `;
+  try {
+    await new Promise((resolve, reject) => {
+      db.query(createUsersTable, async (err) => {
         if (err) {
-          process.exit(1);
+          return reject(err);
         }
-        console.log('USER WITH ROLES TABLE CREATED!');
-        db.query(createRecipeTable, async (err) => {
-          if (err) {
-            process.exit(1);
-          }
-          console.log('RECIPE TABLE CREATED!');
-          db.query(createRecipeWithOwner, async (err) => {
-            if (err) {
-              console.log(err);
-              process.exit(1);
-            }
-            console.log('RECIPE WITH OWNER TABLE CREATED!');
-            process.exit(0);
-          });
-        });
+        return resolve();
       });
     });
-  });
+    await new Promise((resolve, reject) => {
+      db.query(createRolesTable, async (err) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve();
+      });
+    });
+    await new Promise((resolve, reject) => {
+      db.query(createUsersWithRoleTable, async (err) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve();
+      });
+    });
+    await new Promise((resolve, reject) => {
+      db.query(createRecipeTable, async (err) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve();
+      });
+    });
+    await new Promise((resolve, reject) => {
+      db.query(createRecipeWithOwner, async (err) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve();
+      });
+    });
+    await new Promise((resolve, reject) => {
+      db.query(createSessions, async (err) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve();
+      });
+    });
+    process.exit(0);
+  } catch (err) {
+    console.log('ERROR CREATING TABLES: ', err);
+    process.exit(1);
+  }
 });
