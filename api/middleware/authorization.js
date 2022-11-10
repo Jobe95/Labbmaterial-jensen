@@ -8,6 +8,7 @@ const authorization = (req, res, next) => {
   }
   try {
     const data = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+    console.log('DATA I ACCESSTOKEN: ', data);
     req.userId = data.id;
     req.userRoles = data.roles;
     req.email = data.email;
@@ -20,7 +21,6 @@ const authorization = (req, res, next) => {
 
 const adminAuthorization = (req, res, next) => {
   const accessToken = req.cookies.accessToken;
-  console.log(accessToken);
   if (!accessToken) {
     return res.sendStatus(401);
   }

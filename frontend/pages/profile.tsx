@@ -17,23 +17,22 @@ const Profile = () => {
   const user = useSelector(selectUser);
 
   useEffect(() => {
-    try {
-      const fetchUser = async (id: string | string[] | undefined) => {
-        const userId = Number(id);
+    const fetchUser = async (id: string | string[] | undefined) => {
+      const userId = Number(id);
+      try {
         const res = isNaN(userId)
           ? await getMe()
           : await getUser(Number(userId));
         setProfile(res.data);
         setErrorMessage('');
-      };
-
-      fetchUser(router.query.id);
-    } catch (err: any) {
-      if (axios.isAxiosError(err)) {
-        err = err as AxiosError;
-        setErrorMessage(err.response.data.message);
+      } catch (err: any) {
+        if (axios.isAxiosError(err)) {
+          err = err as AxiosError;
+          setErrorMessage(err.response.data.message);
+        }
       }
-    }
+    };
+    fetchUser(router.query.id);
   }, []);
 
   if (errorMessage) {

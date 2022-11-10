@@ -30,7 +30,7 @@ export const LogoutButton = () => {
     }
   }, [isLoggedIn]);
 
-  if (blockedPaths.includes(router.pathname)) {
+  if (blockedPaths.includes(router.pathname) || !isLoggedIn) {
     return <></>;
   }
 

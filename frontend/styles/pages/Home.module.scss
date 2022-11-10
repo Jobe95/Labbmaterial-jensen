@@ -1,41 +1,130 @@
 .main {
-  min-height: 100vh;
-  padding: 4rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   background-color: grey;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 
-  .card {
+  .gradient {
     display: flex;
+    width: 100vw;
+    height: 100vh;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    background-color: rgb(237, 234, 234);
-    padding: 3rem;
-    border-radius: 20px;
-    color: black;
-    font-size: 20px;
-    max-width: 500px;
-    width: 100%;
-    .roles {
+    padding: 4rem 20px;
+    background: linear-gradient(
+      to bottom,
+      rgba(11, 11, 12, 0.43) 0%,
+      #0b0b0c 100%
+    );
+    .card {
       display: flex;
-      flex-direction: wrap;
-      gap: 6px;
-      .role {
-        font-size: 12px;
-        border-radius: 200px;
-        background-color: rgb(132, 227, 232);
-        padding: 0.5rem;
-        transition: 0.3s ease-out;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      background-color: rgba(186, 175, 175, 0.5);
+      padding: 3rem;
+      border-radius: 20px;
+      color: black;
+      font-size: 30px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .link {
+      transition: color 0.18s ease-in;
+    }
+    .link:hover {
+      transition: color 0.25s ease-out;
+      color: #01d28e;
+    }
+  }
+
+  .fab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+    background: rgba(99, 183, 187, 0.05);
+    border: 1px solid rgba(99, 183, 187, 0.6);
+    transition: background 0.3s ease-out;
+    font-size: 24px;
+    font-weight: bold;
+    user-select: none;
+  }
+  .fab:hover {
+    cursor: pointer;
+    background: rgba(99, 183, 187, 0.6);
+  }
+
+  .modalContainer {
+    position: absolute;
+    left: 50%;
+    top: calc(50% - 20px);
+    transform: translate(-50%, -50%);
+    max-width: calc(500px + 40px);
+    width: 100%;
+    padding: 0 20px;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.18s ease-in;
+    &.active {
+      top: 50%;
+      visibility: visible;
+      opacity: 1;
+      transition: all 0.25s ease-out;
+    }
+    .modal {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      border-radius: 5px;
+      background: grey;
+      box-shadow: 0px 4px 30px 8px rgba(99, 183, 187, 0.6);
+      border: 2px solid rgba(99, 183, 187, 1);
+      padding: 2rem;
+      :nth-child(3) {
+        margin-top: 1rem;
       }
-      .role:hover {
-        cursor: pointer;
-        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+      label {
+        font-size: 24px;
+      }
+
+      input[type='text'],
+      input[type='url'],
+      input[type='submit'] {
+        border-radius: 200px;
+        padding: 20px;
+        width: 100%;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        margin-top: 1rem;
+        font-size: 20px;
       }
     }
   }
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  border: 2px solid #01d28e !important;
+  border-radius: 200px;
+  padding: 1rem 2rem;
+  transition: background 0.3s ease-out;
+  text-align: center;
+  user-select: none;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.btn:hover {
+  background: #01d28e4d;
+  cursor: pointer;
 }

@@ -43,8 +43,8 @@ db.connect(async (err, connection) => {
 
   const createRecipeTable = `CREATE TABLE IF NOT EXISTS Recipe (
       id int NOT NULL AUTO_INCREMENT,
-      title varchar(45) NOT NULL,
-      description varchar(100),
+      title varchar(90) NOT NULL,
+      link varchar(255) NOT NULL,
       createdAt date NOT NULL,
       updatedAt date,
       PRIMARY KEY (id) 

@@ -42,7 +42,7 @@ export const LoginForm = () => {
         <form onSubmit={handleSubmit}>
           <div className={styles.inputContainer}>
             <label>Email </label>
-            <input type="text" name="email" required />
+            <input type="email" name="email" required />
           </div>
           <div className={styles.inputContainer}>
             <label>Lösenord </label>
