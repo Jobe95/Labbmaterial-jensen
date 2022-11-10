@@ -125,16 +125,10 @@ db.deleteRecipe = (recipeId) => {
   });
 };
 
-db.createRecipe = (title, description, createdAt) => {
+db.createRecipe = (title, link, createdAt) => {
   return new Promise((resolve, reject) => {
-    const sql = `INSERT INTO Recipe (id, title, description, createdAt) VALUES (?, ?, ?, ?)`;
-    const query = mysql.format(sql, [
-      null,
-      title,
-      description,
-      createdAt,
-      null,
-    ]);
+    const sql = `INSERT INTO Recipe (title, link, createdAt) VALUES (?, ?, ?)`;
+    const query = mysql.format(sql, [title, link, createdAt]);
     pool.query(query, (err, result) => {
       if (err) {
         console.log(err);
@@ -145,10 +139,23 @@ db.createRecipe = (title, description, createdAt) => {
   });
 };
 
-db.assignUserIdToRecipe = (userId, recipeId) => {
+db.getRecipeById = (recipeId) => {
   return new Promise((resolve, reject) => {
-    const sql = 'INSERT INTO RecipeWithOwner (userId, recipeId) VALUES (?, ?)';
-    const query = mysql.format(sql, [userId, recipeId]);
+    const sql = 'SELECT * FROM Recipe WHERE id = ?';
+    const query = mysql.format(sql, [recipeId]);
+    pool.query(query, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result[0]);
+    });
+  });
+};
+
+db.getRecipes = () => {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT * FROM Recipe';
+    const query = mysql.format(sql);
     pool.query(query, (err, result) => {
       if (err) {
         return reject(err);
@@ -158,10 +165,10 @@ db.assignUserIdToRecipe = (userId, recipeId) => {
   });
 };
 
-db.getRecipes = () => {
+db.assignUserIdToRecipe = (userId, recipeId) => {
   return new Promise((resolve, reject) => {
-    const sql = 'SELECT * FROM Recipe';
-    const query = mysql.format(sql);
+    const sql = 'INSERT INTO RecipeWithOwner (userId, recipeId) VALUES (?, ?)';
+    const query = mysql.format(sql, [userId, recipeId]);
     pool.query(query, (err, result) => {
       if (err) {
         return reject(err);

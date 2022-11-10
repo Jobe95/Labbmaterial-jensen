@@ -20,12 +20,15 @@ const Admin = () => {
       })
       .catch((err) => {
         console.log(err.response);
+        if (err.response.status === 403) {
+          router.back();
+        }
         setErrorMessage(err.response.statusText);
       });
   }, []);
 
   if (errorMessage) {
-    return <div>{errorMessage}</div>;
+    return <></>;
   }
 
   const buildUserItem = (user: UserModel, index: number) => {

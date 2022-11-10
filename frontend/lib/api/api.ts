@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { UserModel } from '../models';
+import { RecipeModel, UserModel } from '../models';
 import { client } from './client';
 
 export const logoutUser = async () => {
@@ -28,10 +28,6 @@ export const registerUser = async (
   });
 };
 
-export const refreshToken = async (): Promise<AxiosResponse> => {
-  return await client.get('/api/refresh');
-};
-
 export const getAllUsers = async (): Promise<AxiosResponse> => {
   return await client.get('/api/users');
 };
@@ -44,6 +40,16 @@ export const getUser = async (userId: number): Promise<AxiosResponse> => {
   return await client.get(`/api/user`, { params: { id: userId } });
 };
 
+export const createRecipe = async (
+  title: string,
+  link: string
+): Promise<AxiosResponse<RecipeModel>> => {
+  return await client.post('/api/recipe', {
+    title: title,
+    link: link,
+  });
+};
+
 export const getRecipes = async (): Promise<AxiosResponse> => {
-  return await client.get(`/api/recipes`);
+  return await client.get('/api/recipes');
 };

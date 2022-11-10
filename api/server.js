@@ -65,7 +65,7 @@ app.post('/api/login', async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET,
       {
         audience: 'admin',
-        expiresIn: '1m',
+        expiresIn: '10m',
         issuer: user.username,
       }
     );
@@ -84,15 +84,15 @@ app.post('/api/login', async (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        expires: addMinutes(1),
-        maxAge: addMinutes(1),
+        expires: addMinutes(10),
+        maxAge: addMinutes(10),
       })
       .cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        expires: addMinutes(15),
-        maxAge: addMinutes(15),
+        expires: addMinutes(60 * 24),
+        maxAge: addMinutes(60 * 24),
       })
       .status(200)
       .json({
@@ -128,7 +128,7 @@ app.post('/api/register', async (req, res) => {
     const userId = await db.createUser(username, email, hashedPassword);
     // // 4. Assign ROLE to USER
     await db.assignRoleToUser(userId, 1000);
-    // await db.assignRoleToUser(userId, 2000);
+    await db.assignRoleToUser(userId, 2000);
     // 5. Get ROLES for USER
     const roles = await db.getRolesForUser(userId);
     // 6. Create a session
@@ -139,7 +139,7 @@ app.post('/api/register', async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET,
       {
         audience: 'http://localhost:3000',
-        expiresIn: '1m',
+        expiresIn: '10m',
         issuer: username,
       }
     );
@@ -157,15 +157,15 @@ app.post('/api/register', async (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        expires: addMinutes(1),
-        maxAge: addMinutes(1),
+        expires: addMinutes(10),
+        maxAge: addMinutes(10),
       })
       .cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
-        expires: addMinutes(15),
-        maxAge: addMinutes(15),
+        expires: addMinutes(60 * 24),
+        maxAge: addMinutes(60 * 24),
       })
       .status(201)
       .json({
@@ -173,6 +173,7 @@ app.post('/api/register', async (req, res) => {
         email: email,
         username: username,
         roles: roles.map((val) => val.rolename),
+        accessToken: accessToken,
       });
   } catch (err) {
     console.log('Error in register route: ', err);
@@ -303,14 +304,16 @@ app.get('/api/logout', authorization, validateSession, async (req, res) => {
 app.post('/api/recipe', authorization, async (req, res) => {
   const userId = req.userId;
   const title = req.body.title;
-  const description = req.body.description;
+  const link = req.body.link;
   const createdAt = createAndFormatDate();
 
   try {
-    const recipeId = await db.createRecipe(title, description, createdAt);
+    const recipeId = await db.createRecipe(title, link, createdAt);
     await db.assignUserIdToRecipe(userId, recipeId);
-    return res.sendStatus(200);
+    const recipe = await db.getRecipeById(recipeId);
+    return res.status(200).json(recipe);
   } catch (e) {
+    console.log(e);
     return res.sendStatus(400);
   }
 });
@@ -327,8 +330,6 @@ app.get('/api/recipes', authorization, async (req, res) => {
 
 app.post('/api/revokeSession', async (req, res) => {
   const { sessionId, userId } = req.body;
-  console.log(sessionId);
-  console.log(userId);
   try {
     const result = await db.revokeSession(
       sessionId,

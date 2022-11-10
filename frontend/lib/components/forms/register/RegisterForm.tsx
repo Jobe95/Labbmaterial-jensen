@@ -63,11 +63,16 @@ export const RegisterForm = () => {
           </div>
           <div className={styles.inputContainer}>
             <label>Lösenord </label>
-            <input type="password" name="password" required />
+            <input type="password" name="password" minLength={6} required />
           </div>
           <div className={styles.inputContainer}>
             <label>Upprepa lösenord </label>
-            <input type="password" name="repeatPassword" required />
+            <input
+              type="password"
+              name="repeatPassword"
+              minLength={6}
+              required
+            />
           </div>
           {errorMessage && <div className={styles.error}>{errorMessage}</div>}
           <div>
